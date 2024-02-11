@@ -3,6 +3,8 @@ import sys
 import shutil
 import numpy as np
 from PIL import Image
+from matplotlib import pyplot as plt
+from config import IMAGE_SIZE
 
 '''
 Distributes the dataset into 2 files training_set and test_set
@@ -13,7 +15,7 @@ TEST_SET_NAME = "test_set"
 output_path = './dataset'
 input_path = './dataset/all_data'
 
-def distribute_dataset():
+def Create_Dataset_Dir():
   # Create the training set folder
   if not os.path.exists(f"{output_path}/{TRAINING_SET_NAME}"):
     os.makedirs(f"{output_path}/{TRAINING_SET_NAME}")
@@ -42,10 +44,11 @@ def distribute_dataset():
     image_path = f"{input_path}/{path}.png"
     gui_path = f"{input_path}/{path}.gui"
     img = Image.open(image_path)
-    img.load()
-    img.resize((256, 256))
-    img = np.asarray(img, dtype="float32")
-    img = img / 255.0
+    img_resized = img.resize((IMAGE_SIZE, IMAGE_SIZE), Image.Resampling.LANCZOS)
+    img_rgb = img_resized.convert('RGB')
+    img_array = np.array(img_rgb, dtype="float32")
+    img_array = img_array / 255.0
+    img = img_array
     if i < training_set_length:
       np.savez_compressed(f"{output_path}/{TRAINING_SET_NAME}/{path}.npz", features=img)
       shutil.copyfile(gui_path, f"{output_path}/{TRAINING_SET_NAME}/{path}.gui")
@@ -60,4 +63,5 @@ def distribute_dataset():
     print(f"Processed {i} Training examples")
 
 
-distribute_dataset() 
+Create_Dataset_Dir() 
+    

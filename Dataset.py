@@ -1,10 +1,7 @@
 from Vocab import Vocab, START_TOKEN, END_TOKEN, PAD_TOKEN
 import numpy as np
 import os
-
-CONTEXT_SIZE = 48
-IMAGE_SIZE = 256
-BATCH_SIZE = 64
+from config import CONTEXT_SIZE
 
 class Dataset:
   def __init__(self):
@@ -55,7 +52,7 @@ class Dataset:
     prefix.extend(tokens)
     for i in range(len(prefix) - CONTEXT_SIZE):
       context = prefix[i:i+CONTEXT_SIZE]
-      target = tokens[i+CONTEXT_SIZE]
+      target = prefix[i+CONTEXT_SIZE]
       self.image_set.append(image)
       self.sequence_set.append(context)
       self.target_set.append(target)
@@ -73,17 +70,76 @@ class Dataset:
     
     # Generating one hot encodings
     self.vocab.create_one_hot_encoding()
-    self.one_hot_encode()
     
-    # todo: continue this method
+    # Setting input and output shape
+    self.input_shape = self.image_set[0].shape
+    self.output_size = len(self.vocab.word2index)
 
     print('Dataset loaded')
 
   
-  def one_hot_encode(self):
-    temp = []
-    for label in self.target_set:
-      temp.append(self.vocab.one_hot_encodings[label])
-    self.target_set = temp
+  def one_hot_encode(self, labels=True):
+    encoded = []
+    if labels: # Get the one hot encoding for each label
+      for label in self.target_set:
+        encoded.append(self.vocab.one_hot_encodings[label])
+    else:
+      for sequence in self.sequence_set: # Get the one hot encoding for each word in the sequence
+        sequence_encoded = []
+        for word in sequence:
+          sequence_encoded.append(np.array(self.vocab.one_hot_encodings[word]))
+        encoded.append(np.array(sequence_encoded))
+    return np.array(encoded)
+  
+  def getArrays(self):
+    return np.array(self.image_set), self.one_hot_encode(labels=False), self.one_hot_encode(labels=True)
 
   
+# dataset = Dataset()
+# # dataset.load_paths('./dataset/training_set')
+# # print(len(set(dataset.load_paths('./dataset/test_set')[1])))
+# # print(len(set(dataset.load_paths('./dataset/test_set')[0])))
+
+# dataset.add_example('./dataset/training_set/0B660875-60B4-4E65-9793-3C7EB6C8AFD0.gui', dataset.load_image('./dataset/training_set/0B660875-60B4-4E65-9793-3C7EB6C8AFD0.npz'))
+
+# print(dataset.vocab.word2index)
+# print('------------------------------------------------')
+# print(dataset.vocab.index2word)
+# print('------------------------------------------------')
+# print('------------------------------------------------')
+# print(dataset.vocab.size)
+# print('------------------------------------------------')
+# print(dataset.sequence_set)
+# print('------------------------------------------------')
+# print(dataset.target_set)
+# print('------------------------------------------------')
+# print(dataset.size)
+# print('------------------------------------------------')
+# print('------------------------------------------------')
+# flag = True
+# print(dataset.image_set[0].shape)
+# for ele in dataset.image_set:
+#   flag = flag and (np.equal(ele, dataset.image_set[0])).all()
+# print(flag)
+
+# print('------------------------------------------------')
+# x, y, z = dataset.getArrays()
+# print(x.shape, len(dataset.sequence_set))
+# print('------------------------------------------------')
+# print(y.shape, len(dataset.vocab.word2index))
+# print('------------------------------------------------')
+# print(z.shape)
+# print('------------------------------------------------')
+  
+
+dataset = Dataset()
+dataset.load_dataset('./dataset/training_set')
+print(dataset.size)
+print('------------------------------------------------')
+print(dataset.input_shape)
+print('------------------------------------------------')
+print(dataset.output_size)
+print('------------------------------------------------')
+print(dataset.vocab.size)
+print('------------------------------------------------')
+print(len(dataset.sequence_set))
