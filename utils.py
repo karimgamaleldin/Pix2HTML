@@ -1,7 +1,20 @@
 from config import CONTEXT_SIZE
 import numpy as np
+import matplotlib.pyplot as plt
 
-# utils
+def plot_loss_curves(train_loss, test_loss):
+    train_loss = [loss.cpu().item() for loss in train_loss]
+    test_loss = [loss.cpu().item() for loss in test_loss]
+    x = np.arange(0, len(train_loss))
+    plt.plot(x, train_loss, c='b', label='Train Loss')
+    plt.plot(x, test_loss, c='y', label='Test Loss')
+    plt.xlabel('Epochs')
+    plt.ylabel('Loss')
+    plt.legend()
+    plt.title('loss curves')
+    plt.show()
+
+    
 def perm_channels(images):
     out = []
     for i, img in enumerate(images):
