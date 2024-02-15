@@ -2,7 +2,7 @@
 
 ## Motivation
 
-Pix2HTML is my implementation of the [Pix2Code](https://arxiv.org/abs/1705.07962) paper. The goal of this project is to convert GUIs created by designers into valid HTML code using an end-to-end deep learning approach. This repository contains all the necessary code to train Pix2HTML using CNNs and LSTMs. You can find the training [notebook on Kaggle](https://www.kaggle.com/code/karimgamaleldin/pix2html).
+Pix2HTML is my implementation of the [Pix2Code](https://arxiv.org/abs/1705.07962) paper. The goal of this project is to convert GUIs created by designers into valid HTML code using an end-to-end deep learning approach. This repository contains all the necessary code to train Pix2HTML using CNNs and LSTMs. You can find the training [notebook on Kaggle](https://www.kaggle.com/code/karimgamaleldin/pix2html) and [model parameters](https://drive.google.com/drive/folders/1Vk6MacZx-Y8MNfdajfcN1kXeTfe0UaUZ).
 
 ## Tech Stack
 
