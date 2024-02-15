@@ -1,5 +1,4 @@
 import numpy as np
-import sys
 
 START_TOKEN = "<SOS>"
 END_TOKEN = "<EOS>"

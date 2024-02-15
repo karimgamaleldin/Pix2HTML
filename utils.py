@@ -1,6 +1,8 @@
 from config import CONTEXT_SIZE
 import numpy as np
 import matplotlib.pyplot as plt
+from data import Data
+import torch
 
 def plot_loss_curves(train_loss, test_loss):
     train_loss = [loss.cpu().item() for loss in train_loss]
@@ -22,7 +24,7 @@ def perm_channels(images):
         out.append(img)
     return out
 
-def indexify(d):
+def indexify(d, data_obj: Data):
     max_count = 0
     new = []
     for i in range(len(d)):
@@ -60,7 +62,7 @@ def pad_txt(idxs, max_count):
     pad_seq[-len(idxs):] = idxs
     return pad_seq
 
-def arr2index(arr, data_obj):
+def arr2index(arr, data_obj: Data):
     res = []
     for word in arr:
         res.append(data_obj.vocab.word2index[word])
