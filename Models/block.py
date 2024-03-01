@@ -2,6 +2,7 @@ import math
 import torch
 import torch.nn as nn
 
+# Creating our model
 class VGGBlock(nn.Module):
     def __init__(self, num_convs, in_channels, out_channels, kernel_size):
         super(VGGBlock, self).__init__() 
@@ -16,7 +17,7 @@ class VGGBlock(nn.Module):
         layers.append(nn.MaxPool2d(kernel_size=2, stride=2))
         layers.append(nn.Dropout(p=0.25))
         self.block = nn.Sequential(*layers)
-
+        
     def forward(self, x):
         return self.block(x) 
     

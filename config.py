@@ -1,8 +1,9 @@
-import torch
-
+START_TOKEN = '<SOS>'
+END_TOKEN = '<EOS>'
+PAD_TOKEN = '<PAD>'
 CONTEXT_SIZE = 48
-IMAGE_SIZE = 256
+IMG_SIZE = 256
 BATCH_SIZE = 64
-EPOCHS = 10
-STEPS_PER_EPOCH = 72000
-device = 'cuda ' if torch.cuda.is_available() else 'cpu'
+EPOCHS = 20
+TRAIN_DIR = '/kaggle/input/pix2codefull/dataset/training_set'
+TEST_DIR = '/kaggle/input/pix2codefull/dataset/test_set'
